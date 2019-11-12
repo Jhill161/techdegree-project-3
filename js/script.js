@@ -2,16 +2,33 @@
 Treehouse Techdegree:
 FSJS project 3 - Interactive Form Project
 ******************************************/
+
+/***** GOING FOR EXCEEDS EXPECTATIONS, PLEASE RETURN NEEDS WORK IF DOES NOT MEET EXCEEDS *****/
+
 const $designDropdown = $('#design')
 const $colorDropdown = $('#color')
+const $createTotal = $('.activities').append('<p>Total Cost: $</p>');
+const $activities = $('.activities input');
+let $totalCost = 0;
 
 
 // Use jQuery to put 'Name' input element into Focus State
 $('#name').focus();
 
-// Target 'other job role' and hide initially, using jQuery and Vanilla to practice
+
+// JOB ROLE SECTION
+
+// Target 'other job role' input box and hide initially, using jQuery and Vanilla to practice
 //$('#other_title').hide()
 document.getElementById('other_title').style.display = 'none'; 
+const $otherRole = $('#title')
+$otherRole.change(function (event) {                        // Event listener to check for 'other' job title selected/hide box
+if ($('#title option[value="other"]').is(':checked')) {
+    console.log('checked')
+    $('#other_title').show();
+} else $('#other_title').hide();
+});
+
 
 // T-SHIRT SECTION
 
@@ -25,35 +42,74 @@ const $designOptions = $('#color option');
 for (let i = 0; i <= $designOptions.length; i ++) {    // Loop to remove all options in Colors
     $('#color option').hide();
     //console.log(designOptions[i])
-}
+};
 
-// ------------------------------------ Test ------------------------------
-$('#color option:eq[1]').addClass('js puns');
-$('#color option:eq[2]').addClass('js puns');
-$('#color option:eq[3]').addClass('js puns');
+const $punOptions = $('#color option').filter(function( index ) {
+    return this.innerHTML.includes('Puns')
+  });
 
-//------------------------------------- End Test---------------------------
+const $nonPunOptions = $('#color option').filter(function( index ) {
+    return !this.innerHTML.includes('Puns')
+  });
+
 $designDropdown.change(function () {    // Event listener to check if 'js puns' is selected
     if ($('#design option:checked').val() == 'js puns') {    // Checks if 'js puns' is selected, uses .val() to get value of 
         $('#color option').show();                           // design, then compares to option value of 'js puns
         $('#color option:first').hide();                     // Hides 'Please Select a T-Shirt Theme option
-
-        for (let i = 4; i <= $designOptions.length; i ++) {     // Loops to remove index of $designOptions after first 3
-            $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
-           // console.log(i)
-        }
+        $($punOptions).show();
+        $($nonPunOptions).hide();
+        // for (let i = 4; i <= $designOptions.length; i ++) {     // Loops to remove index of $designOptions after first 3
+        //     $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
+        //    // console.log(i)
+        // }
         $('#color').val('cornflowerblue');                      // Sets to first option in 'js puns'
-        //console.log($('#color').val())
-    }
+
+    };
     if ($('#design option:checked').val() == 'heart js') {     // Checks if 'heart js' is selected
         $('#color option').show();
-        $('#color option:first').hide();
-        for (let i = 0; i <= 3; i ++) {     // Loops to remove index of $designOptions up until 'heart js' value indicies
-            $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
-           // console.log(i)
-        }
-        $('#color').val('gold')                                 // Sets to first option in 'heart js'
+        $($nonPunOptions).show();
+        $($punOptions).hide();
+        $('#color option:first').hide();                        // Hides Select Theme Option
+        // for (let i = 0; i <= 3; i ++) {     // Loops to remove index of $designOptions up until 'heart js' value indicies
+        //     $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
+        //    // console.log(i)
+        // }
+        $('#color').val('tomato')                                 // Sets to first option in 'heart js'
+    };
+});
+
+
+// ACTIVITY SECTION
+// $createTotal = Element to display total declared above.
+
+
+$activities.change(function (event) {
+    let $clicked = $(event.target) //$('input:checked')
+    //console.log($clicked)
+    let $cost = parseInt($clicked.attr('data-cost').slice(-3));   // Parses string to an int removing the $ with slice.
+   // console.log($cost)
+    if ($clicked.is(':checked')) {
+        $totalCost += $cost;
+    } else $totalCost -= $cost;
+    //console.log($totalCost)
+    $('.activities p').text('Total Cost: $ ' + $totalCost)      // Appends total cost to paragraph created above, $createTotal
+
+    let $date = $clicked.attr('data-day-and-time')
+    //console.log($date)
+    
+    for (let i = 0; i <= $activities.length; i ++) {
+        let $dateSeleted = $activities[i];
+        //console.log($dateSeleted)
+        if ($($clicked).attr('data-day-and-time') == $($dateSeleted).attr('data-day-and-time') && 
+            $($clicked) !== $dateSeleted) {
+                if ($($clicked).is(':checked')) {
+                    $($dateSeleted).attr('disabled', true);
+                } else
+                    //!$($dateSeleted).is(':checked') 
+                    $($clicked).attr('disabled',  false);
+            }
     }
 });
+
 
 
