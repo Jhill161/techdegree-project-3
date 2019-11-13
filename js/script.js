@@ -9,6 +9,7 @@ const $designDropdown = $('#design')
 const $colorDropdown = $('#color')
 const $createTotal = $('.activities').append('<p>Total Cost: $</p>');
 const $activities = $('.activities input');
+const $paymentSelect = $('#payment');
 let $totalCost = 0;
 
 
@@ -19,11 +20,12 @@ $('#name').focus();
 // JOB ROLE SECTION
 
 // Target 'other job role' input box and hide initially, using jQuery and Vanilla to practice
+
 //$('#other_title').hide()
 document.getElementById('other_title').style.display = 'none'; 
 const $otherRole = $('#title')
 $otherRole.change(function (event) {                        // Event listener to check for 'other' job title selected/hide box
-if ($('#title option[value="other"]').is(':checked')) {
+if ($('#title option[value="other"]').is(':checked')) {     // If other is checked, shows input box, else hides
     console.log('checked')
     $('#other_title').show();
 } else $('#other_title').hide();
@@ -44,7 +46,7 @@ for (let i = 0; i <= $designOptions.length; i ++) {    // Loop to remove all opt
     //console.log(designOptions[i])
 };
 
-const $punOptions = $('#color option').filter(function( index ) {
+const $punOptions = $('#color option').filter(function( index ) {           // Variables to store Theme options
     return this.innerHTML.includes('Puns')
   });
 
@@ -59,7 +61,7 @@ $designDropdown.change(function () {    // Event listener to check if 'js puns' 
         $($punOptions).show();
         $($nonPunOptions).hide();
         // for (let i = 4; i <= $designOptions.length; i ++) {     // Loops to remove index of $designOptions after first 3
-        //     $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
+        //     $($designOptions[i]).hide();                        // WILL break if options were changed, need alternative
         //    // console.log(i)
         // }
         $('#color').val('cornflowerblue');                      // Sets to first option in 'js puns'
@@ -70,8 +72,8 @@ $designDropdown.change(function () {    // Event listener to check if 'js puns' 
         $($nonPunOptions).show();
         $($punOptions).hide();
         $('#color option:first').hide();                        // Hides Select Theme Option
-        // for (let i = 0; i <= 3; i ++) {     // Loops to remove index of $designOptions up until 'heart js' value indicies
-        //     $($designOptions[i]).hide();                        // Would break if options were changed, need alternative
+        // for (let i = 0; i <= 3; i ++) {          // Loops to remove index of $designOptions up until 'heart js' value indicies
+        //     $($designOptions[i]).hide();         // WILL break if options were changed or in different order, need alternative
         //    // console.log(i)
         // }
         $('#color').val('tomato')                                 // Sets to first option in 'heart js'
@@ -80,7 +82,6 @@ $designDropdown.change(function () {    // Event listener to check if 'js puns' 
 
 
 // ACTIVITY SECTION
-// $createTotal = Element to display total declared above.
 
 
 $activities.change(function (event) {
@@ -97,19 +98,38 @@ $activities.change(function (event) {
     let $date = $clicked.attr('data-day-and-time')
     //console.log($date)
     
-    for (let i = 0; i <= $activities.length; i ++) {
-        let $dateSeleted = $activities[i];
+    for (let i = 0; i <= $activities.length; i ++) {        // Loop to check if checkbox clicked has conflicting time with other
+        let $dateConflict = $activities[i];                 // events and disables those events if so.
         //console.log($dateSeleted)
-        if ($($clicked).attr('data-day-and-time') == $($dateSeleted).attr('data-day-and-time') && 
-            $($clicked) !== $dateSeleted) {
+        if ($($clicked).attr('data-day-and-time') == $($dateConflict).attr('data-day-and-time') && 
+            $($clicked) !== $dateConflict) {
                 if ($($clicked).is(':checked')) {
-                    $($dateSeleted).attr('disabled', true);
+                    $($dateConflict).attr('disabled', true);
+                    $($clicked).attr('disabled', false);
                 } else
-                    //!$($dateSeleted).is(':checked') 
-                    $($clicked).attr('disabled',  false);
+                    //$($dateSeleted).is(':checked') 
+                    $($dateConflict).attr('disabled',  false);
             }
     }
 });
 
+// PAYMENT SECTION
 
+$('#payment option:first').hide();
+$('#payment').change(function (event) {
+    if ($('#payment option:checked').val() == 'Credit Card') {
+        $('#credit-card').show();
+        $('#paypal').hide();
+        $('#bitcoin').hide();   
+    } else if ($('#payment option:checked').val() == 'PayPal') {
+            $('#paypal').show();
+            $('#credit-card').hide();
+            $('#bitcoin').hide();
+    } else if ($('#payment option:checked').val() == 'Bitcoin') {
+        $('#bitcoin').show();
+        $('#credit-card').hide();
+        $('#paypal').hide();
+    }
+
+})
 
