@@ -109,13 +109,16 @@ $activities.change(function (event) {
                 } else
                     //$($dateSeleted).is(':checked') 
                     $($dateConflict).attr('disabled',  false);
-            }
-    }
+            };
+    };
 });
 
 // PAYMENT SECTION
 
 $('#payment option:first').hide();
+$('#payment').val('Credit Card');
+$('#paypal').hide()
+$('#bitcoin').hide();
 $('#payment').change(function (event) {
     if ($('#payment option:checked').val() == 'Credit Card') {
         $('#credit-card').show();
@@ -129,7 +132,71 @@ $('#payment').change(function (event) {
         $('#bitcoin').show();
         $('#credit-card').hide();
         $('#paypal').hide();
-    }
+    };
 
-})
+});
 
+// VALIDATION SECTION
+
+const nameValidation = () => {                  // Validate name
+    const regex = /[a-zA-Z]/;
+    const name = $('#name').val();
+    const result = regex.test(name);
+    if (result == false) {
+        console.log() 
+        return false;   
+    } else return true;
+};
+
+const emailValidation = () => {                 // Validate email address
+    const regex = /^[^@]+@[^@.]+\.[a-z]+$/i;
+    const name = $('#mail').val();
+    const result = regex.test(name);
+    if (result == false) {
+        console.log() 
+        return false;   
+    } else return true;
+};
+
+const activityValidation = () => {              // Validate if at least 1 checkbox is selected
+    if ($('input[type="checkbox"]:checked').length <= 0 ) {
+        console.log() 
+        return false;   
+    } else return true;
+};
+
+const creditValidation = () => {                // Validate credit card input 13-16 nums, ONLY if credit card option is seleted
+    if ($('#payment').val('Credit Card')) {
+        const regex = /^\d{13,16}$/;
+        const name = $('#cc-num').val();
+        const result = regex.test(name);
+        if (result == false) {
+            console.log() 
+            return false;   
+        } else return true;
+    };
+};
+
+const zipValidation = () => {           //  Only validated if credit card is selected payment type
+    if ($('#payment').val('Credit Card')) {
+        const regex = /^\d{5}$/;
+        const name = $('#zip').val();
+        const result = regex.test(name);
+        if (result == false) {
+            console.log() 
+            return false;   
+        } else return true; 
+    };           
+};
+
+const cvvValidation = () => {           //  Only validated if credit card is selected payment type
+    if ($('#payment').val('Credit Card')) {
+        const regex = /^\d{3}$/;
+        const name = $('#cvv').val();
+        const result = regex.test(name);
+        if (result == false) {
+            console.log() 
+            return false;   
+        } else return true;   
+    };            
+};
