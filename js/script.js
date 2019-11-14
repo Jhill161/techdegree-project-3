@@ -4,6 +4,7 @@ FSJS project 3 - Interactive Form Project
 ******************************************/
 
 /***** GOING FOR EXCEEDS EXPECTATIONS, PLEASE RETURN NEEDS WORK IF DOES NOT MEET EXCEEDS *****/
+/***** ZIP CODE INPUT HAS THE REAL TIME VALIDATION ERROR DISPLAYING, CVV HAS THE CONDITIONAL VALIDATION *****/
 
 const $designDropdown = $('#design')
 const $colorDropdown = $('#color')
