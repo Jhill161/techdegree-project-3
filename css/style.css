@@ -93,12 +93,15 @@ input {
 	border: 2px solid #6F9DDC;
 	border-radius: 3px;
 	outline: none;
+
 }
 
 input:focus {
 	background: #fff;
 	border-color: #5e97b0;
 	transition: border-color .4s, background-color .4s;
+	outline: 2px solid #15638a;
+	box-shadow: inset 2px 3px 5px rgba(0, 0, 0, 0.01), 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 input[type="checkbox"],

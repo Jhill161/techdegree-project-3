@@ -38,7 +38,7 @@ if ($('#title option[value="other"]').is(':checked')) {     // If other is check
 $('#design option:first').hide()
 $('#color').prepend('<option>Please Select a T-Shirt Theme</option>');   // Add option in jQuery to Designs
 $('#color').val('Please Select a T-Shirt Theme');   // Set first option to this Val. Got lucky here guessed if would work
-
+$('#color').hide();                                 // Hide select  by default, shows once Theme is selected
 
 const $designOptions = $('#color option');
 for (let i = 0; i <= $designOptions.length; i ++) {    // Loop to remove all options in Colors
@@ -53,8 +53,11 @@ const $punOptions = $('#color option').filter(function( index ) {           // V
 const $nonPunOptions = $('#color option').filter(function( index ) {
     return !this.innerHTML.includes('Puns')
   });
+  
+
 
 $designDropdown.change(function () {    // Event listener to check if 'js puns' is selected
+    $('#color').show();
     if ($('#design option:checked').val() == 'js puns') {    // Checks if 'js puns' is selected, uses .val() to get value of 
         $('#color option').show();                           // design, then compares to option value of 'js puns
         $('#color option:first').hide();                     // Hides 'Please Select a T-Shirt Theme option
@@ -143,9 +146,13 @@ const nameValidation = () => {                  // Validate name
     const name = $('#name').val();
     const result = regex.test(name);
     if (result == false) {
-        console.log() 
-        return false;   
-    } else return true;
+        const nameSpan = "<span id='nameSpan'>Please enter a name.</span>";
+        $('#nameSpan').hide();
+        $('#name').after(nameSpan);
+       // $('.col-6').append(nameSpan).css('color', 'red');
+        return regex.test(name);
+        // console.log() 
+    } else $('#nameSpan').hide(); return true;
 };
 
 const emailValidation = () => {                 // Validate email address
@@ -153,16 +160,24 @@ const emailValidation = () => {                 // Validate email address
     const name = $('#mail').val();
     const result = regex.test(name);
     if (result == false) {
-        console.log() 
-        return false;   
-    } else return true;
+        const mailSpan = "<span id='mailSpan'>Please enter a valid email, ex: John@gmail.com.</span>";
+        $('#mailSpan').hide();
+        $('#mail').after(mailSpan);
+       // $('.col-6').append(mailSpan).css('color', 'red');
+        return regex.test(name);
+        // console.log()  
+    } else $('#mailSpan').hide(); return true;
 };
 
 const activityValidation = () => {              // Validate if at least 1 checkbox is selected
     if ($('input[type="checkbox"]:checked').length <= 0 ) {
-        console.log() 
+        const activitySpan = "<span id='activitySpan'>You must select at least ONE activity.</span>";
+        $('#activitySpan').hide();
+       $('.activities').after(activitySpan);
+       //$('.col-6').append(activitySpan).css('color', 'red');
+        //console.log() 
         return false;   
-    } else return true;
+    } else $('#activitySpan').hide(); return true;
 };
 
 const creditValidation = () => {                // Validate credit card input 13-16 nums, ONLY if credit card option is seleted
@@ -171,9 +186,13 @@ const creditValidation = () => {                // Validate credit card input 13
         const name = $('#cc-num').val();
         const result = regex.test(name);
         if (result == false) {
-            console.log() 
-            return false;   
-        } else return true;
+            const creditSpan = "<span id='creditSpan'>Please enter a valid credit card number between 13-16 digits.</span>";
+            $('#creditSpan').hide();
+            $('#cc-num').after(creditSpan);
+            //$('.col-6').append(creditSpan).css('color', 'red');
+            return regex.test(name);
+            // console.log() 
+        } else $('#creditSpan').hide(); return true;
     };
 };
 
@@ -183,20 +202,69 @@ const zipValidation = () => {           //  Only validated if credit card is sel
         const name = $('#zip').val();
         const result = regex.test(name);
         if (result == false) {
-            console.log() 
-            return false;   
-        } else return true; 
+            const zipSpan = "<span id='zipSpan'>Please enter a valid Zipcode containing 5 digits.</span>";
+            $('#zipSpan').hide();
+            $('#zip').after(zipSpan);
+            //$('.col-6').append(zipSpan).css('color', 'red');
+            return regex.test(name);
+            // console.log()   
+        } else $('#zipSpan').hide(); return true; 
     };           
 };
+// Realtime Zipcode Validation Error Output
+$('#zip').on('input', function (event) {
+    if ($('#zip').val().length < 5) {
+        const zipSpan = "<span id='zipSpan'>Please enter a valid Zipcode containing 5 digits.</span>";
+        $('#zipSpan').hide()
+        $('#zip').after(zipSpan);
+        //$('#zip').css('border-color', 'red')
+        console.log('working')
+    }else $('#zipSpan').hide();//$('#zip').css('outline', '#15638a');
+});
 
-const cvvValidation = () => {           //  Only validated if credit card is selected payment type
+const cvvValidation = () => {           //  Only validated if credit card is selected payment type.  **HAS CONDITIONAL ERROR**
     if ($('#payment').val('Credit Card')) {
         const regex = /^\d{3}$/;
         const name = $('#cvv').val();
         const result = regex.test(name);
+        const regexAlt = /^\d{1,2}$|^\d{4,}/;
         if (result == false) {
-            console.log() 
-            return false;   
-        } else return true;   
+            if (regexAlt.test(name)) {
+                const cvvSpan = "<span id='cvvSpan'>Your CVV must contain EXACTLY three digits.</span>";
+                $('#cvvSpan').hide();
+                $('#cvv').after(cvvSpan);
+                //$('.col-6').append(cvvSpan).css('color', 'red');
+            } else if ($('#cvv').val() == "") {
+                const cvvSpanAlt = "<span id='cvvSpan'>You must enter a CVV number.</span>";
+                $('#cvvSpan').hide()
+                $('#cvv').after(cvvSpanAlt);
+               //$('.col-6').append(cvvSpanAlt).css('color', 'red');
+            }
+            return regex.test(name);
+            // console.log()   
+        } else $('#cvvSpan').hide(); return true;   
     };            
 };
+
+const submitValidation = () => {                // BROKEN AT THE MOMENT
+    if ($('#payment').val('Credit Card')) {
+        if (creditValidation() == true &&
+            zipValidation() == true &&
+            cvvValidation() == true)
+        //         return true;
+        // }else return false;
+
+    if (nameValidation() == true &&
+        emailValidation() == true &&
+        activityValidation() == true) {
+            return true;
+        }else return false;
+    }
+}
+$('form button').on('submit', function (event) {
+    if (submitValidation() == false) {
+        event.preventDefault();
+    }
+
+});
+
