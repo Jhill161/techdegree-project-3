@@ -124,15 +124,15 @@ $('#payment').val('Credit Card');
 $('#paypal').hide()
 $('#bitcoin').hide();
 $('#payment').change(function (event) {
-    if ($('#payment option:checked').val() == 'Credit Card') {
+    if ($('#payment').val() == 'Credit Card') {
         $('#credit-card').show();
         $('#paypal').hide();
         $('#bitcoin').hide();   
-    } else if ($('#payment option:checked').val() == 'PayPal') {
+    } else if ($('#payment').val() == 'PayPal') {
             $('#paypal').show();
             $('#credit-card').hide();
             $('#bitcoin').hide();
-    } else if ($('#payment option:checked').val() == 'Bitcoin') {
+    } else if ($('#payment').val() == 'Bitcoin') {
         $('#bitcoin').show();
         $('#credit-card').hide();
         $('#paypal').hide();
@@ -147,10 +147,9 @@ const nameValidation = () => {                  // Validate name
     const name = $('#name').val();
     const result = regex.test(name);
     if (result == false) {
-        const nameSpan = "<span id='nameSpan'>Please enter a name.</span>";
+        const nameSpan = '<span id="nameSpan" style="color: red">Please enter a name.</span>';
         $('#nameSpan').hide();
         $('#name').after(nameSpan);
-       // $('.col-6').append(nameSpan).css('color', 'red');
         return regex.test(name);
         // console.log() 
     } else $('#nameSpan').hide(); return true;
@@ -161,10 +160,9 @@ const emailValidation = () => {                 // Validate email address
     const name = $('#mail').val();
     const result = regex.test(name);
     if (result == false) {
-        const mailSpan = "<span id='mailSpan'>Please enter a valid email, ex: John@gmail.com.</span>";
+        const mailSpan = '<span id="mailSpan" style="color: red">Please enter a valid email, ex: John@gmail.com.</span>';
         $('#mailSpan').hide();
         $('#mail').after(mailSpan);
-       // $('.col-6').append(mailSpan).css('color', 'red');
         return regex.test(name);
         // console.log()  
     } else $('#mailSpan').hide(); return true;
@@ -172,25 +170,23 @@ const emailValidation = () => {                 // Validate email address
 
 const activityValidation = () => {              // Validate if at least 1 checkbox is selected
     if ($('input[type="checkbox"]:checked').length <= 0 ) {
-        const activitySpan = "<span id='activitySpan'>You must select at least ONE activity.</span>";
+        const activitySpan = '<span id="activitySpan" style="color: red">You must select at least ONE activity.</span>';
         $('#activitySpan').hide();
        $('.activities').after(activitySpan);
-       //$('.col-6').append(activitySpan).css('color', 'red');
         //console.log() 
         return false;   
     } else $('#activitySpan').hide(); return true;
 };
 
 const creditValidation = () => {                // Validate credit card input 13-16 nums, ONLY if credit card option is seleted
-    if ($('#payment').val('Credit Card')) {
+    if ($('#payment').val() === 'Credit Card') {
         const regex = /^\d{13,16}$/;
         const name = $('#cc-num').val();
         const result = regex.test(name);
         if (result == false) {
-            const creditSpan = "<span id='creditSpan'>Please enter a valid credit card number between 13-16 digits.</span>";
+            const creditSpan = '<span id="creditSpan" style="color: red">Please enter a valid credit card number between 13-16 digits.</span>';
             $('#creditSpan').hide();
             $('#cc-num').after(creditSpan);
-            //$('.col-6').append(creditSpan).css('color', 'red');
             return regex.test(name);
             // console.log() 
         } else $('#creditSpan').hide(); return true;
@@ -198,15 +194,14 @@ const creditValidation = () => {                // Validate credit card input 13
 };
 
 const zipValidation = () => {           //  Only validated if credit card is selected payment type
-    if ($('#payment').val('Credit Card')) {
+    if ($('#payment').val() === 'Credit Card') {
         const regex = /^\d{5}$/;
         const name = $('#zip').val();
         const result = regex.test(name);
         if (result == false) {
-            const zipSpan = "<span id='zipSpan'>Please enter a valid Zipcode containing 5 digits.</span>";
+            const zipSpan = '<span id="zipSpan" style="color: red">Please enter a valid Zipcode containing 5 digits.</span>';
             $('#zipSpan').hide();
             $('#zip').after(zipSpan);
-            //$('.col-6').append(zipSpan).css('color', 'red');
             return regex.test(name);
             // console.log()   
         } else $('#zipSpan').hide(); return true; 
@@ -215,31 +210,28 @@ const zipValidation = () => {           //  Only validated if credit card is sel
 // Realtime Zipcode Validation Error Output
 $('#zip').on('input', function (event) {
     if ($('#zip').val().length < 5) {
-        const zipSpan = "<span id='zipSpan'>Please enter a valid Zipcode containing 5 digits.</span>";
+        const zipSpan = '<span id="zipSpan" style="color: red">Please enter a valid Zipcode containing 5 digits.</span>';
         $('#zipSpan').hide()
         $('#zip').after(zipSpan);
-        //$('#zip').css('border-color', 'red')
         console.log('working')
-    }else $('#zipSpan').hide();//$('#zip').css('outline', '#15638a');
+    }else $('#zipSpan').hide();
 });
 
 const cvvValidation = () => {           //  Only validated if credit card is selected payment type.  **HAS CONDITIONAL ERROR**
-    if ($('#payment').val('Credit Card')) {
+    if ($('#payment').val() === 'Credit Card') {
         const regex = /^\d{3}$/;
         const name = $('#cvv').val();
         const result = regex.test(name);
         const regexAlt = /^\d{1,2}$|^\d{4,}/;
         if (result == false) {
             if (regexAlt.test(name)) {
-                const cvvSpan = "<span id='cvvSpan'>Your CVV must contain EXACTLY three digits.</span>";
+                const cvvSpan = '<span id="cvvSpan" style="color: red">Your CVV must contain EXACTLY three digits.</span>';
                 $('#cvvSpan').hide();
                 $('#cvv').after(cvvSpan);
-                //$('.col-6').append(cvvSpan).css('color', 'red');
             } else if ($('#cvv').val() == "") {
-                const cvvSpanAlt = "<span id='cvvSpan'>You must enter a CVV number.</span>";
+                const cvvSpanAlt = '<span id="cvvSpan" style="color: red">You must enter a CVV number.</span>';
                 $('#cvvSpan').hide()
                 $('#cvv').after(cvvSpanAlt);
-               //$('.col-6').append(cvvSpanAlt).css('color', 'red');
             }
             return regex.test(name);
             // console.log()   
@@ -247,22 +239,20 @@ const cvvValidation = () => {           //  Only validated if credit card is sel
     };            
 };
 
-const submitValidation = () => {                // BROKEN AT THE MOMENT
-    if ($('#payment').val('Credit Card')) {
-        if (creditValidation() == true &&
-            zipValidation() == true &&
-            cvvValidation() == true)
-        //         return true;
-        // }else return false;
-
-    if (nameValidation() == true &&
-        emailValidation() == true &&
-        activityValidation() == true) {
-            return true;
-        }else return false;
+let submit = true;
+const submitValidation = () => {                // Submit Validation to check all validations and return true or false
+    let storageArray = [nameValidation(), emailValidation(), activityValidation()];
+    if ($('#payment').val() === 'Credit Card'); {
+        storageArray.push(creditValidation(), zipValidation(), cvvValidation());
     }
-}
-$('form button').on('submit', function (event) {
+    for (let i = 0; i <= storageArray.length; i ++) {
+        if (storageArray[i] == false) {
+            submit = false;
+        }
+    } return submit;
+} 
+
+$('form').on('submit', function (event) {
     if (submitValidation() == false) {
         event.preventDefault();
     }
