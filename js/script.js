@@ -209,7 +209,7 @@ const zipValidation = () => {           //  Only validated if credit card is sel
 };
 // Realtime Zipcode Validation Error Output
 $('#zip').on('input', function (event) {
-    if ($('#zip').val().length < 5) {
+    if ($('#zip').val().length < 5 || $('#zip').val().length > 5) {
         const zipSpan = '<span id="zipSpan" style="color: red">Please enter a valid Zipcode containing 5 digits.</span>';
         $('#zipSpan').hide()
         $('#zip').after(zipSpan);
@@ -239,8 +239,9 @@ const cvvValidation = () => {           //  Only validated if credit card is sel
     };            
 };
 
-let submit = true;
-const submitValidation = () => {                // Submit Validation to check all validations and return true or false
+
+const submitValidation = () => {   
+    let submit = true;             // Submit Validation to check all validations and return true or false
     let storageArray = [nameValidation(), emailValidation(), activityValidation()];
     if ($('#payment').val() === 'Credit Card'); {
         storageArray.push(creditValidation(), zipValidation(), cvvValidation());
